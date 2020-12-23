@@ -8,13 +8,16 @@ const {jwtSecretKey} = require("./config");
 const usersRouter = require("./router/user");
 const userInfoRouter = require("./router/userInfo");
 const categories = require("./router/articleCategories");
+const article = require("./router/article");
 
 app.use(expressJwt({secret: jwtSecretKey, algorithms: ["HS256"]}).unless({path: /^\/api/}));
 app.use(cors());
 app.use(express.urlencoded({extended: false}))
+app.use("/uploads", express.static("./uploads"));
 app.use("/api", usersRouter);
 app.use("/my", userInfoRouter);
 app.use("/my/article", categories);
+app.use("/my/article", article);
 
 app.use((err, req, res, next) => {
     // 验证失败导致的错误
